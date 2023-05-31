@@ -23,14 +23,29 @@ let p8RaceScore = ref('');
 function submitScores(){
   try{
     backupScores();
-    p1Score.value += parseFloat(p1RaceScore.value);
-    p2Score.value += parseFloat(p2RaceScore.value);
-    p3Score.value += parseFloat(p3RaceScore.value);
-    p4Score.value += parseFloat(p4RaceScore.value);
-    p5Score.value += parseFloat(p5RaceScore.value);
-    p6Score.value += parseFloat(p6RaceScore.value);
-    p7Score.value += parseFloat(p7RaceScore.value);
-    p8Score.value += parseFloat(p8RaceScore.value);
+    if(parseFloat(p1RaceScore.value))
+      p1Score.value += parseFloat(p1RaceScore.value);
+    
+    if(parseFloat(p2RaceScore.value))
+      p2Score.value += parseFloat(p2RaceScore.value);
+    
+    if(parseFloat(p3RaceScore.value))
+      p3Score.value += parseFloat(p3RaceScore.value);
+
+    if(parseFloat(p4RaceScore.value))
+      p4Score.value += parseFloat(p4RaceScore.value);
+
+    if(parseFloat(p5RaceScore.value))
+      p5Score.value += parseFloat(p5RaceScore.value);
+      
+    if(parseFloat(p6RaceScore.value))
+      p6Score.value += parseFloat(p6RaceScore.value);
+
+    if(parseFloat(p7RaceScore.value))
+      p7Score.value += parseFloat(p7RaceScore.value);
+
+    if(parseFloat(p8RaceScore.value))
+      p8Score.value += parseFloat(p8RaceScore.value);
 
     resetRaceScores();
   } catch(e){
