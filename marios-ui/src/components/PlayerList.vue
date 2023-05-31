@@ -1,0 +1,103 @@
+<script setup lang="ts">
+import Player from './PlayerComponent.vue'
+import { ref } from 'vue';
+
+let p1Score = ref(0);
+let p2Score = ref(0);
+let p3Score = ref(0);
+let p4Score = ref(0);
+let p5Score = ref(0);
+let p6Score = ref(0);
+let p7Score = ref(0);
+let p8Score = ref(0);
+
+let p1RaceScore = ref('');
+let p2RaceScore = ref('');
+let p3RaceScore = ref('');
+let p4RaceScore = ref('');
+let p5RaceScore = ref('');
+let p6RaceScore = ref('');
+let p7RaceScore = ref('');
+let p8RaceScore = ref('');
+
+function submitScores(){
+  try{
+    backupScores();
+    p1Score.value += parseFloat(p1RaceScore.value);
+    p2Score.value += parseFloat(p2RaceScore.value);
+    p3Score.value += parseFloat(p3RaceScore.value);
+    p4Score.value += parseFloat(p4RaceScore.value);
+    p5Score.value += parseFloat(p5RaceScore.value);
+    p6Score.value += parseFloat(p6RaceScore.value);
+    p7Score.value += parseFloat(p7RaceScore.value);
+    p8Score.value += parseFloat(p8RaceScore.value);
+
+    resetRaceScores();
+  } catch(e){
+    console.log(e);
+  }    
+}
+
+function resetRaceScores(){
+  p1RaceScore.value = '';
+  p2RaceScore.value = '';
+  p3RaceScore.value = '';
+  p4RaceScore.value = '';
+  p5RaceScore.value = '';
+  p6RaceScore.value = '';
+  p7RaceScore.value = '';
+  p8RaceScore.value = '';
+}
+
+function backupScores(){
+  const jsonString = JSON.stringify({
+    p1: p1Score.value,
+    p2: p2Score.value,
+    p3: p3Score.value,
+    p4: p4Score.value,
+    p5: p5Score.value,
+    p6: p6Score.value,
+    p7: p7Score.value,
+    p8: p8Score.value,
+  })
+  window.localStorage.setItem('backupScores', jsonString);
+}
+</script>
+
+<template>
+  <Player>
+    <label for="p1">P1: {{ p1Score }}</label> <br>
+    <input id="p1" type="text" v-model="p1RaceScore">
+  </Player>
+  <Player>
+    <label for="p2">P2: {{ p2Score }}</label> <br>
+    <input id="p2" type="text" v-model="p2RaceScore">
+  </Player>
+  <Player>
+    <label for="p3">P3: {{ p3Score }}</label> <br>
+    <input id="p3" type="text" v-model="p3RaceScore">
+  </Player>
+  <Player>
+    <label for="p4">P4: {{ p4Score }}</label> <br>
+    <input id="p4" type="text" v-model="p4RaceScore">
+  </Player>
+  <Player>
+    <label for="p5">P5: {{ p5Score }}</label> <br>
+    <input id="p5" type="text" v-model="p5RaceScore">
+  </Player>
+  <Player>
+    <label for="p6">P6: {{ p6Score }}</label> <br>
+    <input id="p6" type="text" v-model="p6RaceScore">
+  </Player>
+  <Player>
+    <label for="p7">P7: {{ p7Score }}</label>  <br>
+    <input id="p7" type="text" v-model="p7RaceScore">
+  </Player>
+  <Player>  
+    <label for="p7">P8: {{p8Score}}</label>  <br>
+    <input id="p7" type="text" v-model="p8RaceScore" >    
+  </Player>
+  
+  <button @click="submitScores()">Submit scores</button>
+</template>
+
