@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Player from './PlayerComponent.vue'
+import PlayerComponent from './PlayerComponent.vue'
 import { ref } from 'vue';
 
 let p1Score = ref(0);
@@ -65,39 +65,42 @@ function backupScores(){
 </script>
 
 <template>
-  <Player>
+  <PlayerComponent>
     <label for="p1">P1: {{ p1Score }}</label> <br>
     <input id="p1" type="text" v-model="p1RaceScore">
-  </Player>
-  <Player>
+  </PlayerComponent>
+  <PlayerComponent>
     <label for="p2">P2: {{ p2Score }}</label> <br>
     <input id="p2" type="text" v-model="p2RaceScore">
-  </Player>
-  <Player>
+  </PlayerComponent>
+  <PlayerComponent>
     <label for="p3">P3: {{ p3Score }}</label> <br>
     <input id="p3" type="text" v-model="p3RaceScore">
-  </Player>
-  <Player>
+  </PlayerComponent>
+  <PlayerComponent>
     <label for="p4">P4: {{ p4Score }}</label> <br>
     <input id="p4" type="text" v-model="p4RaceScore">
-  </Player>
-  <Player>
+  </PlayerComponent>
+  <PlayerComponent>
     <label for="p5">P5: {{ p5Score }}</label> <br>
     <input id="p5" type="text" v-model="p5RaceScore">
-  </Player>
-  <Player>
+  </PlayerComponent>
+  <PlayerComponent>
     <label for="p6">P6: {{ p6Score }}</label> <br>
     <input id="p6" type="text" v-model="p6RaceScore">
-  </Player>
-  <Player>
+  </PlayerComponent>
+  <PlayerComponent>
     <label for="p7">P7: {{ p7Score }}</label>  <br>
     <input id="p7" type="text" v-model="p7RaceScore">
-  </Player>
-  <Player>  
+  </PlayerComponent>
+  <PlayerComponent>  
     <label for="p7">P8: {{p8Score}}</label>  <br>
     <input id="p7" type="text" v-model="p8RaceScore" >    
-  </Player>
+  </PlayerComponent>
   
-  <button @click="submitScores()">Submit scores</button>
+  <PlayerComponent>  
+    <button @click="submitScores()">Submit scores</button>
+  </PlayerComponent>
+
 </template>
 

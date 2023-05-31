@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from '../components/PlayerList.vue'
+import PlayerList from '../components/PlayerList.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <PlayerList />
   </main>
 </template>
