@@ -10,6 +10,10 @@ let p5Score = ref(0);
 let p6Score = ref(0);
 let p7Score = ref(0);
 let p8Score = ref(0);
+let teamMario = ref('');
+let teamLuigi = ref('');
+let teamMarioScore = ref(0);
+let teamLuigiScore = ref(0);
 
 let p1RaceScore = ref('');
 let p2RaceScore = ref('');
@@ -46,6 +50,9 @@ function submitScores(){
 
     if(parseFloat(p8RaceScore.value))
       p8Score.value += parseFloat(p8RaceScore.value);
+
+    teamMarioScore.value = p1Score.value + p2Score.value + p3Score.value + p4Score.value;
+    teamLuigiScore.value = p5Score.value + p6Score.value + p7Score.value + p8Score.value;
 
     resetRaceScores();
   } catch(e){
@@ -115,6 +122,15 @@ function backupScores(){
   
   <PlayerComponent>  
     <button @click="submitScores()">Submit scores</button>
+  </PlayerComponent>
+
+  <PlayerComponent>  
+    <label for="teamMario">Low Numbers: {{teamMarioScore}}</label>  <br>
+    <input id="teamMario" type="text" >    
+  </PlayerComponent>
+  <PlayerComponent>  
+    <label for="teamLuigi">High Numbers: {{teamLuigiScore}}</label>  <br>
+    <input id="teamLuigi" type="text" >    
   </PlayerComponent>
 
 </template>
