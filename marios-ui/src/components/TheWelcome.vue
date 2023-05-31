@@ -9,78 +9,119 @@ import SupportIcon from './icons/IconSupport.vue'
 
 <template>
   <WelcomeItem>
-    <template #icon>
-      <DocumentationIcon />
-    </template>
-    <template #heading>Documentation</template>
-
-    Vue’s
-    <a href="https://vuejs.org/" target="_blank" rel="noopener">official documentation</a>
-    provides you with all information you need to get started.
+    <label for="p1">P1: {{ p1Score }}</label> <br>
+    <input id="p1" type="text">
   </WelcomeItem>
-
   <WelcomeItem>
-    <template #icon>
-      <ToolingIcon />
-    </template>
-    <template #heading>Tooling</template>
-
-    This project is served and bundled with
-    <a href="https://vitejs.dev/guide/features.html" target="_blank" rel="noopener">Vite</a>. The
-    recommended IDE setup is
-    <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VSCode</a> +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank" rel="noopener">Volar</a>. If
-    you need to test your components and web pages, check out
-    <a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a> and
-    <a href="https://on.cypress.io/component" target="_blank">Cypress Component Testing</a>.
-
-    <br />
-
-    More instructions are available in <code>README.md</code>.
+    <label for="p2">P2: {{ p2Score }}</label> <br>
+    <input id="p2" type="text">
   </WelcomeItem>
-
   <WelcomeItem>
-    <template #icon>
-      <EcosystemIcon />
-    </template>
-    <template #heading>Ecosystem</template>
-
-    Get official tools and libraries for your project:
-    <a href="https://pinia.vuejs.org/" target="_blank" rel="noopener">Pinia</a>,
-    <a href="https://router.vuejs.org/" target="_blank" rel="noopener">Vue Router</a>,
-    <a href="https://test-utils.vuejs.org/" target="_blank" rel="noopener">Vue Test Utils</a>, and
-    <a href="https://github.com/vuejs/devtools" target="_blank" rel="noopener">Vue Dev Tools</a>. If
-    you need more resources, we suggest paying
-    <a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">Awesome Vue</a>
-    a visit.
+    <label for="p3">P3: {{ p3Score }}</label> <br>
+    <input id="p3" type="text">
   </WelcomeItem>
-
   <WelcomeItem>
-    <template #icon>
-      <CommunityIcon />
-    </template>
-    <template #heading>Community</template>
-
-    Got stuck? Ask your question on
-    <a href="https://chat.vuejs.org" target="_blank" rel="noopener">Vue Land</a>, our official
-    Discord server, or
-    <a href="https://stackoverflow.com/questions/tagged/vue.js" target="_blank" rel="noopener"
-      >StackOverflow</a
-    >. You should also subscribe to
-    <a href="https://news.vuejs.org" target="_blank" rel="noopener">our mailing list</a> and follow
-    the official
-    <a href="https://twitter.com/vuejs" target="_blank" rel="noopener">@vuejs</a>
-    twitter account for latest news in the Vue world.
+    <label for="p4">P4: {{ p4Score }}</label> <br>
+    <input id="p4" type="text">
   </WelcomeItem>
-
   <WelcomeItem>
-    <template #icon>
-      <SupportIcon />
-    </template>
-    <template #heading>Support Vue</template>
-
-    As an independent project, Vue relies on community backing for its sustainability. You can help
-    us by
-    <a href="https://vuejs.org/sponsor/" target="_blank" rel="noopener">becoming a sponsor</a>.
+    <label for="p5">P5: {{ p5Score }}</label> <br>
+    <input id="p5" type="text">
   </WelcomeItem>
+  <WelcomeItem>
+    <label for="p6">P6: {{ p6Score }}</label> <br>
+    <input id="p6" type="text">
+  </WelcomeItem>
+  <WelcomeItem>
+    <label for="p7">P7: {{ p7Score }}</label>  <br>
+    <input id="p7" type="text">
+  </WelcomeItem>
+  <WelcomeItem>  
+    <label for="p7">P8: {{p8Score}}</label>  <br>
+    <input id="p7" v-model="p8RaceScore" type="text">
+    
+  </WelcomeItem>
+  
+  <button @click="submitScores()">Submit scores</button>
 </template>
+
+<script lang="ts">
+export default{
+  p1Score: 0,
+  p2Score: 0,
+  p3Score: 0,
+  p4Score: 0,
+  p5Score: 0,
+  p6Score: 0,
+  p7Score: 0,
+  p8Score: 0,
+  data() {
+    return {
+      p1RaceScore: '',
+      p2RaceScore: '',
+      p3RaceScore: '',
+      p4RaceScore: '',
+      p5RaceScore: '',
+      p6RaceScore: '',
+      p7RaceScore: '',
+      p8RaceScore: '',
+    }
+  },
+  methods: {
+    submitScores(){
+      // for(let i = 1; i < 8; i++){
+      //   const input = document.getElementById(`p${i}`);  
+      //   if(input?.nodeValue)    
+      // }
+
+      try{
+        const p1Input = document.getElementById("p1");
+        if(p1Input?.nodeValue) {
+          p1Score += parseFloat(this.p8RaceScore);
+        }
+
+
+        const p2Input = document.getElementById("p2");
+        if(p2Input?.nodeValue) {
+          p2Score += parseFloat(p2Input?.nodeValue);
+        }
+
+        const p3Input = document.getElementById("p3");
+        if(p3Input?.nodeValue) {
+          p3Score += parseFloat(p3Input?.nodeValue);
+        }
+
+        const p4Input = document.getElementById("p4");
+        if(p4Input?.nodeValue) {
+          p4Score += parseFloat(p4Input?.nodeValue);
+        }
+
+        const p5Input = document.getElementById("p5");
+        if(p5Input?.nodeValue) {
+          p5Score += parseFloat(p5Input?.nodeValue);
+        }
+
+        const p6Input = document.getElementById("p6");
+        if(p6Input?.nodeValue) {
+          p6Score += parseFloat(p6Input?.nodeValue);
+        }
+
+        const p7Input = document.getElementById("p7");
+        if(p7Input?.nodeValue) {
+          p7Score += parseFloat(p7Input?.nodeValue);
+        }
+
+        const p8Input = document.getElementById("p8");
+        if(p8Input?.nodeValue) {
+          p8Score += parseFloat(p8Input?.nodeValue);
+        }
+      } catch(e){
+        console.log(e);
+      }
+    
+    }
+  }
+
+
+}
+</script>
