@@ -31,7 +31,9 @@ let p8RaceScore = ref('');
 
 function submitScores(){
   try{
-    backupScores();
+    //backupScores();
+
+
     if(parseFloat(p1RaceScore.value))
       p1Score.value += parseFloat(p1RaceScore.value);
     

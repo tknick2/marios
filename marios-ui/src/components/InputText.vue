@@ -1,6 +1,13 @@
 <script setup lang="ts">
     import {ref} from 'vue'
     const input = ref('');
+
+    const scores = {}
+
+    function submitScores(){
+
+    }
+
 </script>
 
 <template>
@@ -8,6 +15,7 @@
         <div class="details">
             <label>Enter scores:</label>
             <input type="text" v-model="input">
+            <button @click="submitScores()">Submit scores</button>
         </div>
     </div>
 </template>
