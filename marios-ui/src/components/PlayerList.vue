@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import PlayerComponent from './PlayerComponent.vue'
-import InputText from './InputText.vue'
 import { ref } from 'vue'
 import type Player from '../../src/player'
 
@@ -84,7 +83,6 @@ function backupScores() {
 </script>
 
 <template>
-  <InputText />
   <PlayerComponent>
     <label for="p1">P1: {{ p1Score }}</label> <br />
     <input id="p1" type="text" v-model="p1RaceScore" />
