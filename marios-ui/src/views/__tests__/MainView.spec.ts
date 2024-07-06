@@ -26,13 +26,23 @@ describe('Test Marios UI', () => {
     expect(wrapper.text()).toContain('Scores Submitted!')
   })
 
-  it('does not display a success message until the "Submit Scores" button is clicked', async () => {
+  it('does not display "Scores submitted" message until the "Submit Scores" button is clicked', async () => {
     const input = wrapper.find('[data-test="input-scores"]')
     await input.setValue('123')
     expect(wrapper.text()).not.toContain('Scores Submitted!')
   })
 
-  it.todo('"Scores submitted" message disappears after 3 seconds', async () => {})
+  it('"Scores submitted" message disappears when new text is entered', async () => {
+    const input = wrapper.find('[data-test="input-scores"]')
+    const submit = wrapper.find('[data-test="submit-scores"]')
+    await input.setValue('123')
+    await submit.trigger('click')
+
+    expect(wrapper.text()).toContain('Scores Submitted!')
+
+    await input.setValue('456')
+    expect(wrapper.text()).not.toContain('Scores Submitted!')
+  })
 
   // TODO
   it.todo('displays an error message when scores are not submitted', async () => {})
