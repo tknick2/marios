@@ -1,15 +1,25 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import PlayerList from '@/components/PlayerList.vue'
+import { ref } from 'vue'
+const scoresSubmittedSuccess = 'Scores Submitted!'
+const scoresMustBeNumbers = 'Please enter only numbers'
 
 const inputScores = ref('')
-const showScoresSubmitted = ref(false)
+const scoreInputFeedback = ref('')
 
 function submitScores() {
-  showScoresSubmitted.value = true
+  // validate that the scores are numbers
+  const numbersOnlyRegex = /^[0-9]+$/
+
+  if (!numbersOnlyRegex.test(inputScores.value)) {
+    scoreInputFeedback.value = scoresMustBeNumbers
+  } else {
+    scoreInputFeedback.value = scoresSubmittedSuccess
+  }
 }
 
 function scoresChanged() {
-  showScoresSubmitted.value = false
+  scoreInputFeedback.value = ''
 }
 </script>
 
@@ -27,7 +37,9 @@ function scoresChanged() {
       <button data-test="submit-scores" @click="submitScores">Submit scores</button>
     </div>
 
-    <p v-if="showScoresSubmitted">Scores Submitted!</p>
+    <p>{{ scoreInputFeedback }}</p>
+
+    <PlayerList />
   </div>
 </template>
 

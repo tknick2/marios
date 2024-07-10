@@ -44,6 +44,32 @@ describe('Test Marios UI', () => {
     expect(wrapper.text()).not.toContain('Scores Submitted!')
   })
 
+  it('submitted scores can only be numbers', async () => {
+    const input = wrapper.find('[data-test="input-scores"]')
+    const submit = wrapper.find('[data-test="submit-scores"]')
+    await input.setValue('abc')
+
+    await submit.trigger('click')
+    expect(wrapper.text()).not.toContain('Scores Submitted!')
+    expect(wrapper.text()).toContain('Please enter only numbers')
+  })
+
   // TODO
   it.todo('displays an error message when scores are not submitted', async () => {})
+
+  describe('Player List', () => {
+    it('renders a list of players with scores of 0 at the start', async () => {
+      expect(wrapper.text()).toContain('P1: 0')
+      expect(wrapper.text()).toContain('P2: 0')
+      expect(wrapper.text()).toContain('P3: 0')
+      expect(wrapper.text()).toContain('P4: 0')
+      expect(wrapper.text()).toContain('P5: 0')
+      expect(wrapper.text()).toContain('P6: 0')
+      expect(wrapper.text()).toContain('P7: 0')
+      expect(wrapper.text()).toContain('P8: 0')
+    })
+
+    it.todo('renders the sum of the "low number" player scores')
+    it.todo('renders the sum of the "high number" player scores')
+  })
 })
