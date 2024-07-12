@@ -1,31 +1,14 @@
 <script setup lang="ts">
-import PlayerComponent from './PlayerComponent.vue'
 import { ref } from 'vue'
 import type Player from '../../src/player'
+import type { Scores } from '../../src/types'
 
-let players: Player[] = []
-
-let p1Score = ref(0)
-let p2Score = ref(0)
-let p3Score = ref(0)
-let p4Score = ref(0)
-let p5Score = ref(0)
-let p6Score = ref(0)
-let p7Score = ref(0)
-let p8Score = ref(0)
-let teamMario = ref('')
-let teamLuigi = ref('')
-let teamMarioScore = ref(0)
-let teamLuigiScore = ref(0)
-
-let p1RaceScore = ref('')
-let p2RaceScore = ref('')
-let p3RaceScore = ref('')
-let p4RaceScore = ref('')
-let p5RaceScore = ref('')
-let p6RaceScore = ref('')
-let p7RaceScore = ref('')
-let p8RaceScore = ref('')
+const props = defineProps({
+  scores: {
+    type: Object as () => Scores,
+    required: true
+  }
+})
 
 function submitScores() {
   try {
@@ -55,49 +38,15 @@ function submitScores() {
     console.log(e)
   }
 }
-
-function resetRaceScores() {
-  p1RaceScore.value = ''
-  p2RaceScore.value = ''
-  p3RaceScore.value = ''
-  p4RaceScore.value = ''
-  p5RaceScore.value = ''
-  p6RaceScore.value = ''
-  p7RaceScore.value = ''
-  p8RaceScore.value = ''
-}
-
-function backupScores() {
-  const jsonString = JSON.stringify({
-    p1: p1Score.value,
-    p2: p2Score.value,
-    p3: p3Score.value,
-    p4: p4Score.value,
-    p5: p5Score.value,
-    p6: p6Score.value,
-    p7: p7Score.value,
-    p8: p8Score.value
-  })
-  window.localStorage.setItem('backupScores', jsonString)
-}
 </script>
 
 <template>
-  <p>P1: {{ p1Score }}</p>
-  <p>P2: {{ p2Score }}</p>
-  <p>P3: {{ p3Score }}</p>
-  <p>P4: {{ p4Score }}</p>
-  <p>P5: {{ p5Score }}</p>
-  <p>P6: {{ p6Score }}</p>
-  <p>P7: {{ p7Score }}</p>
-  <p>P8: {{ p8Score }}</p>
-
-  <!-- <PlayerComponent>
-    <label for="teamMario">Low Numbers: {{ teamMarioScore }}</label> <br />
-    <input id="teamMario" type="text" />
-  </PlayerComponent>
-  <PlayerComponent>
-    <label for="teamLuigi">High Numbers: {{ teamLuigiScore }}</label> <br />
-    <input id="teamLuigi" type="text" />
-  </PlayerComponent> -->
+  <p>P1: {{ props.scores.p1 }}</p>
+  <p>P2: {{ props.scores.p2 }}</p>
+  <p>P3: {{ props.scores.p3 }}</p>
+  <p>P4: {{ props.scores.p4 }}</p>
+  <p>P5: {{ props.scores.p5 }}</p>
+  <p>P6: {{ props.scores.p6 }}</p>
+  <p>P7: {{ props.scores.p7 }}</p>
+  <p>P8: {{ props.scores.p8 }}</p>
 </template>
