@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, expect } from 'vitest'
+import { beforeEach, afterEach, describe, it, expect } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import MainView from '../MainView.vue'
 
@@ -7,6 +7,10 @@ describe('Test Marios UI', () => {
 
   beforeEach(() => {
     wrapper = mount(MainView)
+  })
+
+  afterEach(() => {
+    window.localStorage.clear()
   })
 
   it('displays a score input of type text', async () => {
@@ -94,6 +98,21 @@ describe('Test Marios UI', () => {
     }
   )
 
+  it('clicking the "clear scores" button clears the scores', async () => {
+    const input = wrapper.find('[data-test="input-scores"]')
+    const submit = wrapper.find('[data-test="submit-scores"]')
+
+    // submit scores for first race
+    await input.setValue('12345678')
+    await submit.trigger('click')
+
+    expect(wrapper.text()).toContain('P1 Total: 1 Last Race: 1')
+
+    const clearButton = wrapper.find('[data-test="clear-scores"]')
+    await clearButton.trigger('click')
+    expect(wrapper.text()).toContain('P1 Total: 0 Last Race: 0')
+  })
+
   it.todo(
     'displas the sum of the "high number" scores when there are less than 8 players',
     async () => {}
@@ -110,44 +129,57 @@ describe('Test Marios UI', () => {
 
   describe('Player List Component', () => {
     it('renders a list of players with scores of 0 at the start', async () => {
-      expect(wrapper.text()).toContain('P1: 0')
-      expect(wrapper.text()).toContain('P2: 0')
-      expect(wrapper.text()).toContain('P3: 0')
-      expect(wrapper.text()).toContain('P4: 0')
-      expect(wrapper.text()).toContain('P5: 0')
-      expect(wrapper.text()).toContain('P6: 0')
-      expect(wrapper.text()).toContain('P7: 0')
-      expect(wrapper.text()).toContain('P8: 0')
+      expect(wrapper.text()).toContain('P1 Total: 0 Last Race: 0')
+      expect(wrapper.text()).toContain('P2 Total: 0 Last Race: 0')
+      expect(wrapper.text()).toContain('P3 Total: 0 Last Race: 0')
+      expect(wrapper.text()).toContain('P4 Total: 0 Last Race: 0')
+      expect(wrapper.text()).toContain('P5 Total: 0 Last Race: 0')
+      expect(wrapper.text()).toContain('P6 Total: 0 Last Race: 0')
+      expect(wrapper.text()).toContain('P7 Total: 0 Last Race: 0')
+      expect(wrapper.text()).toContain('P8 Total: 0 Last Race: 0')
     })
 
-    it('renders the scores for each player when scores are submitted', async () => {
+    it('renders the total score for each player when scores are submitted', async () => {
       const input = wrapper.find('[data-test="input-scores"]')
       const submit = wrapper.find('[data-test="submit-scores"]')
+
+      // submit scores for first race
       await input.setValue('12345678')
       await submit.trigger('click')
-      expect(wrapper.text()).toContain('P1: 1')
-      expect(wrapper.text()).toContain('P2: 2')
-      expect(wrapper.text()).toContain('P3: 3')
-      expect(wrapper.text()).toContain('P4: 4')
-      expect(wrapper.text()).toContain('P5: 5')
-      expect(wrapper.text()).toContain('P6: 6')
-      expect(wrapper.text()).toContain('P7: 7')
-      expect(wrapper.text()).toContain('P8: 8')
+
+      // submit scores for second race
+      await input.setValue('87654321')
+      await submit.trigger('click')
+
+      expect(wrapper.text()).toContain('P1 Total: 9')
+      expect(wrapper.text()).toContain('P2 Total: 9')
+      expect(wrapper.text()).toContain('P3 Total: 9')
+      expect(wrapper.text()).toContain('P4 Total: 9')
+      expect(wrapper.text()).toContain('P5 Total: 9')
+      expect(wrapper.text()).toContain('P6 Total: 9')
+      expect(wrapper.text()).toContain('P7 Total: 9')
+      expect(wrapper.text()).toContain('P8 Total: 9')
     })
 
-    it('renders the scores for each player from the previous race when scores are submitted', async () => {
+    it('renders last race scores for each player when scores are submitted', async () => {
       const input = wrapper.find('[data-test="input-scores"]')
       const submit = wrapper.find('[data-test="submit-scores"]')
+
+      // submit scores for first race
+      await input.setValue('12345678')
+      await submit.trigger('click')
+
       await input.setValue('81726354')
       await submit.trigger('click')
-      expect(wrapper.text()).toContain('P1: 2')
-      expect(wrapper.text()).toContain('P2: 4')
-      expect(wrapper.text()).toContain('P3: 6')
-      expect(wrapper.text()).toContain('P4: 8')
-      expect(wrapper.text()).toContain('P5: 7')
-      expect(wrapper.text()).toContain('P6: 5')
-      expect(wrapper.text()).toContain('P7: 3')
-      expect(wrapper.text()).toContain('P8: 1')
+
+      expect(wrapper.text()).toContain('Last Race: 8')
+      expect(wrapper.text()).toContain('Last Race: 1')
+      expect(wrapper.text()).toContain('Last Race: 7')
+      expect(wrapper.text()).toContain('Last Race: 2')
+      expect(wrapper.text()).toContain('Last Race: 6')
+      expect(wrapper.text()).toContain('Last Race: 3')
+      expect(wrapper.text()).toContain('Last Race: 5')
+      expect(wrapper.text()).toContain('Last Race: 4')
     })
 
     it.todo(

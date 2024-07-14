@@ -1,1 +1,1 @@
-export type Scores = { [key: string]: number }
+export type Scores = { [key: string]: { [key: string]: number } }

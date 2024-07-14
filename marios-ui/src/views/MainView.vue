@@ -12,7 +12,23 @@ const tooManyScoresEntered = 'Too many scores entered, the maximum is 8'
 const inputScores = ref('')
 const scoreInputFeedback = ref('')
 
-const scores: Scores = reactive({ p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0 })
+let startingScoreObject = {
+  p1: { total: 0, lastRace: 0 },
+  p2: { total: 0, lastRace: 0 },
+  p3: { total: 0, lastRace: 0 },
+  p4: { total: 0, lastRace: 0 },
+  p5: { total: 0, lastRace: 0 },
+  p6: { total: 0, lastRace: 0 },
+  p7: { total: 0, lastRace: 0 },
+  p8: { total: 0, lastRace: 0 }
+}
+
+const stringLoadedFromLocalStorage = window.localStorage.getItem('backupScores')
+if (stringLoadedFromLocalStorage) {
+  startingScoreObject = JSON.parse(stringLoadedFromLocalStorage)
+}
+
+const scores: Scores = reactive(startingScoreObject)
 
 function submitScores() {
   const numbersOnlyRegex = /^[0-9]+$/
@@ -33,9 +49,11 @@ function submitScores() {
     // ex: player 1 finished in position 3, so the value at index 2 in the array will be 1
     const playerFinishPosition = scoreInputArray.indexOf(i.toString()) + 1
 
-    scores[`p${i}`] += playerFinishPosition
+    scores[`p${i}`].total += playerFinishPosition
+    scores[`p${i}`].lastRace = playerFinishPosition
   }
 
+  backupScores()
   scoreInputFeedback.value = scoresSubmittedSuccess
 }
 
@@ -43,19 +61,32 @@ function scoresChanged() {
   scoreInputFeedback.value = ''
 }
 
-// function backupScores() {
-//   const jsonString = JSON.stringify({
-//     p1: p1Score.value,
-//     p2: p2Score.value,
-//     p3: p3Score.value,
-//     p4: p4Score.value,
-//     p5: p5Score.value,
-//     p6: p6Score.value,
-//     p7: p7Score.value,
-//     p8: p8Score.value
-//   })
-//   window.localStorage.setItem('backupScores', jsonString)
-// }
+function clearScores() {
+  scores.p1.total = 0
+  scores.p2.total = 0
+  scores.p3.total = 0
+  scores.p4.total = 0
+  scores.p5.total = 0
+  scores.p6.total = 0
+  scores.p7.total = 0
+  scores.p8.total = 0
+
+  scores.p1.lastRace = 0
+  scores.p2.lastRace = 0
+  scores.p3.lastRace = 0
+  scores.p4.lastRace = 0
+  scores.p5.lastRace = 0
+  scores.p6.lastRace = 0
+  scores.p7.lastRace = 0
+  scores.p8.lastRace = 0
+
+  backupScores()
+}
+
+function backupScores() {
+  const jsonString = JSON.stringify(scores)
+  window.localStorage.setItem('backupScores', jsonString)
+}
 </script>
 
 <template>
@@ -75,12 +106,14 @@ function scoresChanged() {
     <p>{{ scoreInputFeedback }}</p>
 
     <p data-test="low-numbers">
-      Low number score: {{ scores.p1 + scores.p2 + scores.p3 + scores.p4 }}
+      Low number score: {{ scores.p1.total + scores.p2.total + scores.p3.total + scores.p4.total }}
     </p>
     <p data-test="high-numbers">
-      High number score: {{ scores.p5 + scores.p6 + scores.p7 + scores.p8 }}
+      High number score: {{ scores.p5.total + scores.p6.total + scores.p7.total + scores.p8.total }}
     </p>
     <PlayerList :scores="scores" />
+
+    <button data-test="clear-scores" @click="clearScores">Clear scores</button>
   </div>
 </template>
 
