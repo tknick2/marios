@@ -11,6 +11,7 @@ const tooManyScoresEntered = 'Too many scores entered, the maximum is 8'
 
 const inputScores = ref('')
 const scoreInputFeedback = ref('')
+const promptClearScores = ref(false)
 
 let startingScoreObject = {
   p1: { total: 0, lastRace: 0 },
@@ -91,6 +92,14 @@ function backupScores() {
 
 <template>
   <div>
+    <h2 data-test="low-numbers">
+      Low number score: {{ scores.p1.total + scores.p2.total + scores.p3.total + scores.p4.total }}
+    </h2>
+    <h2 data-test="high-numbers">
+      High number score: {{ scores.p5.total + scores.p6.total + scores.p7.total + scores.p8.total }}
+    </h2>
+    <PlayerList :scores="scores" />
+
     <div>
       <label for="input-scores">Enter scores:</label>
       <input
@@ -101,19 +110,15 @@ function backupScores() {
         @input="scoresChanged"
       />
       <button data-test="submit-scores" @click="submitScores">Submit scores</button>
+      <p>{{ scoreInputFeedback }}</p>
     </div>
 
-    <p>{{ scoreInputFeedback }}</p>
-
-    <p data-test="low-numbers">
-      Low number score: {{ scores.p1.total + scores.p2.total + scores.p3.total + scores.p4.total }}
-    </p>
-    <p data-test="high-numbers">
-      High number score: {{ scores.p5.total + scores.p6.total + scores.p7.total + scores.p8.total }}
-    </p>
-    <PlayerList :scores="scores" />
-
-    <button data-test="clear-scores" @click="clearScores">Clear scores</button>
+    <button data-test="clear-scores" @click="promptClearScores = true">Clear scores</button>
+    <div v-if="promptClearScores">
+      <p>Are you sure you want to clear all scores?</p>
+      <button data-test="confirm-clear-scores" @click="clearScores">Yes</button>
+      <button data-test="cancel-clear-scores" @click="promptClearScores = false">No</button>
+    </div>
   </div>
 </template>
 

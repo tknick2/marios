@@ -98,7 +98,7 @@ describe('Test Marios UI', () => {
     }
   )
 
-  it('clicking the "clear scores" button clears the scores', async () => {
+  it('clicking the "clear scores" button displays a confirmation prompt, then clears the scores if the user confirms', async () => {
     const input = wrapper.find('[data-test="input-scores"]')
     const submit = wrapper.find('[data-test="submit-scores"]')
 
@@ -109,12 +109,39 @@ describe('Test Marios UI', () => {
     expect(wrapper.text()).toContain('P1 Total: 1 Last Race: 1')
 
     const clearButton = wrapper.find('[data-test="clear-scores"]')
+
     await clearButton.trigger('click')
+    expect(wrapper.text()).toContain('Yes')
+
+    const confirm = wrapper.find('[data-test="confirm-clear-scores"]')
+    await confirm.trigger('click')
     expect(wrapper.text()).toContain('P1 Total: 0 Last Race: 0')
   })
 
+  it('clicking the "clear scores" button displays a confirmation prompt, then does nothing if the user clicks "no"', async () => {
+    const input = wrapper.find('[data-test="input-scores"]')
+    const submit = wrapper.find('[data-test="submit-scores"]')
+
+    // submit scores for first race
+    await input.setValue('12345678')
+    await submit.trigger('click')
+
+    expect(wrapper.text()).toContain('P1 Total: 1 Last Race: 1')
+
+    const clearButton = wrapper.find('[data-test="clear-scores"]')
+
+    await clearButton.trigger('click')
+    expect(wrapper.text()).toContain('No')
+
+    const cancel = wrapper.find('[data-test="cancel-clear-scores"]')
+    await cancel.trigger('click')
+    expect(wrapper.text()).toContain('P1 Total: 1 Last Race: 1')
+  })
+
+  it.todo('players can enter a name', async () => {})
+
   it.todo(
-    'displas the sum of the "high number" scores when there are less than 8 players',
+    'displays the sum of the "high number" scores when there are less than 8 players',
     async () => {}
   )
 
@@ -182,6 +209,25 @@ describe('Test Marios UI', () => {
       expect(wrapper.text()).toContain('Last Race: 4')
     })
 
+    // NEED TO FIGURE OUT HOW TO TEST THIS!!!!!!
+    it("displays the leading team's score (high or low numbers) on top", async () => {
+      const input = wrapper.find('[data-test="input-scores"]')
+      const submit = wrapper.find('[data-test="submit-scores"]')
+
+      // submit scores for first race
+      await input.setValue('12345678')
+      await submit.trigger('click')
+
+      // submit scores for second race
+      await input.setValue('87654321')
+      await submit.trigger('click')
+
+      // submit scores for third race
+      await input.setValue('87654321')
+      await submit.trigger('click')
+    })
+
+    // What was I thinknig here...
     it.todo(
       'renders the sum of the scores for the entire round when the scores are submitted',
       async () => {}
