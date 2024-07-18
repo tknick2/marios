@@ -138,6 +138,8 @@ describe('Test Marios UI', () => {
     expect(wrapper.text()).toContain('P1 Total: 1 Last Race: 1')
   })
 
+  it.todo('hides the confirmation prompt after the user makes a selection', async () => {})
+
   it.todo('players can enter a name', async () => {})
 
   it.todo(
