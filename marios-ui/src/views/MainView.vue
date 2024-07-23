@@ -46,9 +46,7 @@ function submitScores() {
   const scoreInputArray = inputScores.value.split('')
 
   for (let i = 1; i < scoreInputArray.length + 1; i++) {
-    // the position that a player finished the race in will be their index in the scoreInputArray + 1
-    // ex: player 1 finished in position 3, so the value at index 2 in the array will be 1
-    const playerFinishPosition = scoreInputArray.indexOf(i.toString()) + 1
+    const playerFinishPosition = parseFloat(scoreInputArray[i - 1])
 
     scores[`p${i}`].total += playerFinishPosition
     scores[`p${i}`].lastRace = playerFinishPosition
@@ -82,6 +80,8 @@ function clearScores() {
   scores.p8.lastRace = 0
 
   backupScores()
+
+  promptClearScores.value = false
 }
 
 function backupScores() {
@@ -92,10 +92,10 @@ function backupScores() {
 
 <template>
   <div>
-    <h2 data-test="low-numbers">
+    <h2 data-test="low-numbers,team-scores">
       Low number score: {{ scores.p1.total + scores.p2.total + scores.p3.total + scores.p4.total }}
     </h2>
-    <h2 data-test="high-numbers">
+    <h2 data-test="high-numbers,team-scores">
       High number score: {{ scores.p5.total + scores.p6.total + scores.p7.total + scores.p8.total }}
     </h2>
     <PlayerList :scores="scores" />

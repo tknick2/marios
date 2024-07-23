@@ -61,8 +61,8 @@ describe('Test Marios UI', () => {
   it.each([
     ['12345678', 26],
     ['87654321', 10],
-    ['81726354', 16],
-    ['74652138', 16],
+    ['81726354', 18],
+    ['74652138', 14],
     ['27816345', 18]
   ])(
     'displays the sum of the "high number" scores when there are 8 players',
@@ -81,8 +81,8 @@ describe('Test Marios UI', () => {
   it.each([
     ['12345678', 10],
     ['87654321', 26],
-    ['81726354', 20],
-    ['74652138', 20],
+    ['81726354', 18],
+    ['74652138', 22],
     ['27816345', 18]
   ])(
     'displays the sum of the "low number" scores when there are 8 players',
@@ -138,7 +138,34 @@ describe('Test Marios UI', () => {
     expect(wrapper.text()).toContain('P1 Total: 1 Last Race: 1')
   })
 
-  it.todo('hides the confirmation prompt after the user makes a selection', async () => {})
+  it('The confirmation prompt is hidden after the user makes a selection', async () => {
+    const input = wrapper.find('[data-test="input-scores"]')
+    const submit = wrapper.find('[data-test="submit-scores"]')
+
+    // submit scores for first race
+    await input.setValue('12345678')
+    await submit.trigger('click')
+
+    expect(wrapper.text()).toContain('P1 Total: 1 Last Race: 1')
+
+    const clearButton = wrapper.find('[data-test="clear-scores"]')
+
+    await clearButton.trigger('click')
+    expect(wrapper.text()).toContain('No')
+
+    let cancel = wrapper.find('[data-test="cancel-clear-scores"]')
+    await cancel.trigger('click')
+    cancel = wrapper.find('[data-test="cancel-clear-scores"]')
+    expect(cancel.exists()).not.toBe(true)
+
+    await clearButton.trigger('click')
+    expect(wrapper.text()).toContain('No')
+
+    let confirm = wrapper.find('[data-test="confirm-clear-scores"]')
+    await confirm.trigger('click')
+    confirm = wrapper.find('[data-test="confirm-clear-scores"]')
+    expect(confirm.exists()).not.toBe(true)
+  })
 
   it.todo('players can enter a name', async () => {})
 
@@ -211,22 +238,43 @@ describe('Test Marios UI', () => {
       expect(wrapper.text()).toContain('Last Race: 4')
     })
 
-    // NEED TO FIGURE OUT HOW TO TEST THIS!!!!!!
     it("displays the leading team's score (high or low numbers) on top", async () => {
       const input = wrapper.find('[data-test="input-scores"]')
       const submit = wrapper.find('[data-test="submit-scores"]')
 
+      const teamScores = wrapper.findAll('[data-test="team-scores"]')
+
       // submit scores for first race
       await input.setValue('12345678')
       await submit.trigger('click')
+      expect(teamScores[0].text()).toContain('10')
 
       // submit scores for second race
       await input.setValue('87654321')
       await submit.trigger('click')
+      expect(teamScores[0].text()).toContain('36')
 
       // submit scores for third race
       await input.setValue('87654321')
       await submit.trigger('click')
+      expect(teamScores[0].text()).toContain('46')
+    })
+
+    it('scores are input in player order, not score order', async () => {
+      const input = wrapper.find('[data-test="input-scores"]')
+      const submit = wrapper.find('[data-test="submit-scores"]')
+
+      await input.setValue('37218456')
+      await submit.trigger('click')
+
+      expect(wrapper.text()).toContain('P1 Total: 3 Last Race: 3')
+      expect(wrapper.text()).toContain('P2 Total: 7 Last Race: 7')
+      expect(wrapper.text()).toContain('P3 Total: 2 Last Race: 2')
+      expect(wrapper.text()).toContain('P4 Total: 1 Last Race: 1')
+      expect(wrapper.text()).toContain('P5 Total: 8 Last Race: 8')
+      expect(wrapper.text()).toContain('P6 Total: 4 Last Race: 4')
+      expect(wrapper.text()).toContain('P7 Total: 5 Last Race: 5')
+      expect(wrapper.text()).toContain('P8 Total: 6 Last Race: 6')
     })
 
     // What was I thinknig here...

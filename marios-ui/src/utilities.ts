@@ -1,4 +1,3 @@
-import { describe } from 'node:test'
 import type { Scores } from './types'
 
 /**
@@ -10,6 +9,3 @@ import type { Scores } from './types'
 export function sortScores(scores: Scores) {
   return Object.fromEntries(Object.entries(scores).sort((a, b) => a[1].total - b[1].total))
 }
-
-// test the sortScores function
-describe()
