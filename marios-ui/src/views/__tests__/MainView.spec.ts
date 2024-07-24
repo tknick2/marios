@@ -167,6 +167,28 @@ describe('Test Marios UI', () => {
     expect(confirm.exists()).not.toBe(true)
   })
 
+  it("displays the leading team's score (high or low numbers) on top", async () => {
+    const input = wrapper.find('[data-test="input-scores"]')
+    const submit = wrapper.find('[data-test="submit-scores"]')
+
+    const teamScores = wrapper.findAll('[data-test$="-numbers"]')
+
+    // submit scores for first race
+    await input.setValue('12345678')
+    await submit.trigger('click')
+    expect(teamScores[0].text()).toContain('10')
+
+    // submit scores for second race
+    await input.setValue('87654321')
+    await submit.trigger('click')
+    expect(teamScores[0].text()).toContain('36')
+
+    // submit scores for third race
+    await input.setValue('12345678')
+    await submit.trigger('click')
+    expect(teamScores[0].text()).toContain('46')
+  })
+
   it.todo('players can enter a name', async () => {})
 
   it.todo(
@@ -236,28 +258,6 @@ describe('Test Marios UI', () => {
       expect(wrapper.text()).toContain('Last Race: 3')
       expect(wrapper.text()).toContain('Last Race: 5')
       expect(wrapper.text()).toContain('Last Race: 4')
-    })
-
-    it("displays the leading team's score (high or low numbers) on top", async () => {
-      const input = wrapper.find('[data-test="input-scores"]')
-      const submit = wrapper.find('[data-test="submit-scores"]')
-
-      const teamScores = wrapper.findAll('[data-test="team-scores"]')
-
-      // submit scores for first race
-      await input.setValue('12345678')
-      await submit.trigger('click')
-      expect(teamScores[0].text()).toContain('10')
-
-      // submit scores for second race
-      await input.setValue('87654321')
-      await submit.trigger('click')
-      expect(teamScores[0].text()).toContain('36')
-
-      // submit scores for third race
-      await input.setValue('87654321')
-      await submit.trigger('click')
-      expect(teamScores[0].text()).toContain('46')
     })
 
     it('scores are input in player order, not score order', async () => {

@@ -92,12 +92,13 @@ function backupScores() {
 
 <template>
   <div>
-    <h2 data-test="low-numbers,team-scores">
+    <h2 data-test="low-numbers">
       Low number score: {{ scores.p1.total + scores.p2.total + scores.p3.total + scores.p4.total }}
     </h2>
-    <h2 data-test="high-numbers,team-scores">
+    <h2 data-test="high-numbers">
       High number score: {{ scores.p5.total + scores.p6.total + scores.p7.total + scores.p8.total }}
     </h2>
+
     <PlayerList :scores="scores" />
 
     <div>
