@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PlayerList from '@/components/PlayerList.vue'
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import type { Scores } from '../types'
 
 // todo: these can all be extracted into a constants file
@@ -12,6 +12,13 @@ const tooManyScoresEntered = 'Too many scores entered, the maximum is 8'
 const inputScores = ref('')
 const scoreInputFeedback = ref('')
 const promptClearScores = ref(false)
+
+const lowNumberScoresTotal = computed(
+  () => scores.p1.total + scores.p2.total + scores.p3.total + scores.p4.total
+)
+const highNumberScoresTotal = computed(
+  () => scores.p5.total + scores.p6.total + scores.p7.total + scores.p8.total
+)
 
 let startingScoreObject = {
   p1: { total: 0, lastRace: 0 },
@@ -41,6 +48,12 @@ function submitScores() {
 
   if (inputScores.value.length > 8) {
     scoreInputFeedback.value = tooManyScoresEntered
+    return
+  }
+
+  if (inputScores.value.length > [...new Set(inputScores.value.split(''))].length) {
+    scoreInputFeedback.value = 'Scores list can not contain duplicate numbers!'
+    return
   }
 
   const scoreInputArray = inputScores.value.split('')
@@ -54,6 +67,10 @@ function submitScores() {
 
   backupScores()
   scoreInputFeedback.value = scoresSubmittedSuccess
+
+  if (scoresSubmittedSuccess) {
+    inputScores.value = ''
+  }
 }
 
 function scoresChanged() {
@@ -92,12 +109,26 @@ function backupScores() {
 
 <template>
   <div>
-    <h2 data-test="low-numbers">
-      Low number score: {{ scores.p1.total + scores.p2.total + scores.p3.total + scores.p4.total }}
-    </h2>
-    <h2 data-test="high-numbers">
-      High number score: {{ scores.p5.total + scores.p6.total + scores.p7.total + scores.p8.total }}
-    </h2>
+    <div v-if="lowNumberScoresTotal < highNumberScoresTotal">
+      <h2 data-test="low-numbers">
+        Low number score:
+        {{ lowNumberScoresTotal }}
+      </h2>
+      <h2 data-test="high-numbers">
+        High number score:
+        {{ highNumberScoresTotal }}
+      </h2>
+    </div>
+    <div v-else>
+      <h2 data-test="high-numbers">
+        High number score:
+        {{ highNumberScoresTotal }}
+      </h2>
+      <h2 data-test="low-numbers">
+        Low number score:
+        {{ lowNumberScoresTotal }}
+      </h2>
+    </div>
 
     <PlayerList :scores="scores" />
 

@@ -30,6 +30,23 @@ describe('Test Marios UI', () => {
     expect(wrapper.text()).toContain('Scores Submitted!')
   })
 
+  it('clears the score input when "Submit Scores" is clicked', async () => {
+    const input = wrapper.find('[data-test="input-scores"]')
+    const submit = wrapper.find('[data-test="submit-scores"]')
+    await input.setValue('123')
+    await submit.trigger('click')
+    expect((input.element as HTMLInputElement).value).toBeFalsy()
+  })
+
+  it('does not allow duplicate numbers in the score input', async () => {
+    const input = wrapper.find('[data-test="input-scores"]')
+    const submit = wrapper.find('[data-test="submit-scores"]')
+    await input.setValue('11')
+
+    await submit.trigger('click')
+    expect(wrapper.text()).toContain('Scores list can not contain duplicate numbers!')
+  })
+
   it('does not display "Scores submitted" message until the "Submit Scores" button is clicked', async () => {
     const input = wrapper.find('[data-test="input-scores"]')
     await input.setValue('123')
@@ -69,11 +86,11 @@ describe('Test Marios UI', () => {
     async (input, expectedSum) => {
       const inputElement = wrapper.find('[data-test="input-scores"]')
       const submitButton = wrapper.find('[data-test="submit-scores"]')
-      const highNumberScore = wrapper.find('[data-test="high-numbers"]')
 
       await inputElement.setValue(input)
       await submitButton.trigger('click')
 
+      const highNumberScore = wrapper.find('[data-test="high-numbers"]')
       expect(highNumberScore.text()).toContain(expectedSum.toString())
     }
   )
@@ -89,11 +106,11 @@ describe('Test Marios UI', () => {
     async (input, expectedSum) => {
       const inputElement = wrapper.find('[data-test="input-scores"]')
       const submitButton = wrapper.find('[data-test="submit-scores"]')
-      const lowNumberScore = wrapper.find('[data-test="low-numbers"]')
 
       await inputElement.setValue(input)
       await submitButton.trigger('click')
 
+      const lowNumberScore = wrapper.find('[data-test="low-numbers"]')
       expect(lowNumberScore.text()).toContain(expectedSum.toString())
     }
   )
@@ -171,22 +188,25 @@ describe('Test Marios UI', () => {
     const input = wrapper.find('[data-test="input-scores"]')
     const submit = wrapper.find('[data-test="submit-scores"]')
 
-    const teamScores = wrapper.findAll('[data-test$="-numbers"]')
-
+    // Low numbers should be displayed on top
     // submit scores for first race
     await input.setValue('12345678')
     await submit.trigger('click')
-    expect(teamScores[0].text()).toContain('10')
+    let teamScores = wrapper.findAll('[data-test$="-numbers"]')
+    expect(teamScores[0].text()).toContain('Low number score')
 
     // submit scores for second race
     await input.setValue('87654321')
     await submit.trigger('click')
-    expect(teamScores[0].text()).toContain('36')
+    teamScores = wrapper.findAll('[data-test$="-numbers"]')
+    expect(teamScores[0].text()).toContain('High number score')
 
+    // High numbers should be displayed on top
     // submit scores for third race
-    await input.setValue('12345678')
+    await input.setValue('87654321')
     await submit.trigger('click')
-    expect(teamScores[0].text()).toContain('46')
+    teamScores = wrapper.findAll('[data-test$="-numbers"]')
+    expect(teamScores[0].text()).toContain('High number score')
   })
 
   it.todo('players can enter a name', async () => {})
@@ -201,7 +221,13 @@ describe('Test Marios UI', () => {
     async () => {}
   )
 
-  it.todo('displays an error message when more than 8 scores are submitted', async () => {})
+  it('displays an error message when more than 8 scores are submitted', async () => {
+    const input = wrapper.find('[data-test="input-scores"]')
+    const submit = wrapper.find('[data-test="submit-scores"]')
+    await input.setValue('123456789')
+    await submit.trigger('click')
+    expect(wrapper.text()).toContain('Too many scores entered, the maximum is 8')
+  })
 
   it.todo('displays an error message when scores are not submitted', async () => {})
 
