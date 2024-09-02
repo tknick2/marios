@@ -2,12 +2,11 @@
 import PlayerList from '@/components/PlayerList.vue'
 import { ref, reactive, computed } from 'vue'
 import type { Scores } from '../types'
-
-// todo: these can all be extracted into a constants file
-const scoresSubmittedSuccess = 'Scores Submitted!'
-const scoresMustBeNumbers = 'Please enter only numbers'
-// todo: this number can be created dynamically based on the number of players
-const tooManyScoresEntered = 'Too many scores entered, the maximum is 8'
+import {
+  SCORES_SUBMITTED_SUCCESS,
+  SCORES_MUST_BE_NUMBERS,
+  TOO_MANY_SCORES_ENTERED
+} from '../constants'
 
 const inputScores = ref('')
 const scoreInputFeedback = ref('')
@@ -39,22 +38,7 @@ if (stringLoadedFromLocalStorage) {
 const scores: Scores = reactive(startingScoreObject)
 
 function submitScores() {
-  const numbersOnlyRegex = /^[0-9]+$/
-
-  if (!numbersOnlyRegex.test(inputScores.value)) {
-    scoreInputFeedback.value = scoresMustBeNumbers
-    return
-  }
-
-  if (inputScores.value.length > 8) {
-    scoreInputFeedback.value = tooManyScoresEntered
-    return
-  }
-
-  if (inputScores.value.length > [...new Set(inputScores.value.split(''))].length) {
-    scoreInputFeedback.value = 'Scores list can not contain duplicate numbers!'
-    return
-  }
+  if (!validateInput()) return
 
   const scoreInputArray = inputScores.value.split('')
 
@@ -66,11 +50,32 @@ function submitScores() {
   }
 
   backupScores()
-  scoreInputFeedback.value = scoresSubmittedSuccess
+  scoreInputFeedback.value = SCORES_SUBMITTED_SUCCESS
 
-  if (scoresSubmittedSuccess) {
+  if (SCORES_SUBMITTED_SUCCESS) {
     inputScores.value = ''
   }
+}
+
+function validateInput() {
+  const numbersOnlyRegex = /^[0-9]+$/
+
+  if (!numbersOnlyRegex.test(inputScores.value)) {
+    scoreInputFeedback.value = SCORES_MUST_BE_NUMBERS
+    return false
+  }
+
+  if (inputScores.value.length > 8) {
+    scoreInputFeedback.value = TOO_MANY_SCORES_ENTERED
+    return false
+  }
+
+  if (inputScores.value.length > [...new Set(inputScores.value.split(''))].length) {
+    scoreInputFeedback.value = 'Scores list can not contain duplicate numbers!'
+    return false
+  }
+
+  return true
 }
 
 function scoresChanged() {
@@ -133,7 +138,7 @@ function backupScores() {
     <PlayerList :scores="scores" />
 
     <div>
-      <label for="input-scores">Enter scores:</label>
+      <label for="input-scores">Enter scores (in player order p1,p2,p3,...):</label>
       <input
         v-model="inputScores"
         id="input-scores"
