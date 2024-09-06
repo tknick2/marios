@@ -1,0 +1,6 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Add Players > has an input field for the number of players with a default value of 8 1`] = `
+"<h1>Add Players</h1>
+<input type=\\"number\\">"
+`;

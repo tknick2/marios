@@ -1,11 +1,7 @@
 import { beforeEach, afterEach, describe, it, expect } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import MainView from '../MainView.vue'
-import {
-  SCORES_SUBMITTED_SUCCESS,
-  SCORES_MUST_BE_NUMBERS,
-  TOO_MANY_SCORES_ENTERED
-} from '../../constants'
+import { SCORES_SUBMITTED_SUCCESS, TOO_MANY_SCORES_ENTERED } from '../../constants'
 
 describe('Test Marios UI', () => {
   let wrapper: VueWrapper
